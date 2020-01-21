@@ -23,10 +23,10 @@ def load_model(path):
     try:
         return keras.models.load_model(path)
     except ValueError:
-        return load_json_model(path)
+        return _load_json_model(path)
 
 
-def load_json_model(path_h5):
+def _load_json_model(path_h5):
     assert path_h5.suffix == '.h5', 'Only supports .h5 models'
     path_json = str(path_h5).replace('.h5', '.json')
 

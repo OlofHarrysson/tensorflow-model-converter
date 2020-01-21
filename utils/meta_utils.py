@@ -8,7 +8,6 @@ def get_project_root():
 def get_model_outdir(model_path, tf_version):
     mp = Path(model_path).stem
     tf_v = tf_version.replace('.', '_')
-    # out_dir = Path('output_models') / f'{mp}_tensorflow_{tf_v}'
     out_dir = Path('output_models') / '{}_tensorflow_{}'.format(mp, tf_v)
     out_dir.mkdir(parents=True, exist_ok=True)
     return out_dir
