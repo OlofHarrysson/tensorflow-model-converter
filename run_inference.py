@@ -1,5 +1,6 @@
 import argparse
 from pathlib import Path
+import numpy as np
 
 from utils import tf_utils
 
@@ -13,22 +14,21 @@ def parse_args():
                    required=True,
                    help='Path to input model')
 
-    p.add_argument('-o',
-                   '--model_out_dir',
-                   type=str,
-                   required=True,
-                   help='Directory where model will be saved')
-
     return p.parse_args()
 
 
 def main():
     args = parse_args()
+    np.random.seed(420)
+    tf_utils.enable_eager()
     model_path = Path(args.model_path)
     model = tf_utils.load_model(model_path)
 
-    model_dir = Path(args.model_out_dir)
-    tf_utils.save_model(model, model_dir / model_path.name)
+    #
+    inputs = tf_utils.prepare_input(model)
+
+    outputs = model(inputs)
+    print(outputs)
 
 
 if __name__ == '__main__':

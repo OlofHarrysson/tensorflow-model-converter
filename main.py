@@ -1,6 +1,7 @@
 import subprocess
 import argparse
 from pathlib import Path
+from collections import namedtuple
 
 from utils import meta_utils
 
@@ -17,7 +18,7 @@ def parse_args():
         default='input_models/mymodel210.h5',
         help='Path to input model')
 
-    tf_versions = ['1.12.0', '1.5.0', '2.1.0']
+    tf_versions = ['1.12.0', '1.15.0', '2.1.0']
 
     p.add_argument('-i',
                    '--in_version',
@@ -43,15 +44,20 @@ def parse_args():
 
 def main():
     args = parse_args()
+    in_version, out_version = args.in_version, args.out_version
 
     assert Path(args.model_path).exists(), f'File not found: {args.model_path}'
 
-    inp_model_path = convert_model(args.model_path, args.in_version)
-    out_model_path = convert_model(inp_model_path, args.out_version)
+    inp_model_path = convert_model(args.model_path, in_version)
+    out_model_path = convert_model(inp_model_path, out_version)
 
-    models = [args.model_path, inp_model_path, out_model_path]
-    test_models(args, models)
-    # Run test of original path, resaved original and output path
+    Model = namedtuple('Model', ['path', 'tf_version'])
+    models = [
+        Model(args.model_path, in_version),
+        Model(inp_model_path, in_version),
+        Model(out_model_path, out_version)
+    ]
+    test_models(models)
 
 
 def convert_model(model_path, tf_version, verbose=False):
@@ -60,7 +66,7 @@ def convert_model(model_path, tf_version, verbose=False):
     model_outdir = meta_utils.get_model_outdir(model_path, tf_version)
     command = f'python convert_model.py -m {model_path} -o {model_outdir}'
     docker_image = f'tensorflow/tensorflow:{tf_version}-py3'
-    run_docker(docker_image, command, verbose)
+    # run_docker(docker_image, command, verbose)
     print(f"Resaved model @ '{model_outdir}'")
     return model_outdir / Path(model_path).name
 
@@ -74,8 +80,13 @@ def run_docker(docker_image, command, verbose):
     subprocess.run(args.split(), check=True, capture_output=not verbose)
 
 
-def test_models(args, models):
-    pass
+def test_models(models):
+    for model in models:
+        tf_version = model.tf_version
+        docker_image = f'tensorflow/tensorflow:{tf_version}-py3'
+        command = f'python run_inference.py -m {model.path}'
+        run_docker(docker_image, command, True)
+        # break
 
 
 if __name__ == '__main__':
