@@ -26,6 +26,12 @@ python main.py -h
 
 
 
+## Model compatibility
+
+The project is new so haven't been tested very much. The plan is to have a compatibility matrix here for successfully/failed model conversions.
+
+
+
 ## Feature requests
 
 Vote for features or add suggestions you'd like to see at [https://internetport.hellonext.co/b/tensorflow-model-converter](https://internetport.hellonext.co/b/tensorflow-model-converter)  

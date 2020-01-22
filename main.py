@@ -15,7 +15,12 @@ def parse_args():
                    required=True,
                    help='Path to input model')
 
-    tf_versions = ['1.12.0', '1.15.0', '2.1.0']
+    # Stable releases from tensorflows docker. Could also work with non-stable releases
+    tf_1 = [
+        '1.11.0', '1.12.0', '1.12.3', '1.13.1', '1.13.2', '1.14.0', '1.15.0'
+    ]
+    tf_2 = ['2.0.0', '2.1.0']
+    tf_versions = tf_1 + tf_2
 
     p.add_argument('-i',
                    '--in_version',
