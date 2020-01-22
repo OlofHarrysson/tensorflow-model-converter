@@ -2,90 +2,16 @@ import tensorflow as tf
 from tensorflow import keras
 import json
 import numpy as np
-import functools
-
-try:
-    from .multipledispatch import dispatch
-except:
-    from multipledispatch import dispatch
-
-
-@functools.total_ordering
-class TensorflowVersion():
-    def __init__(self, version):
-        err_msg = "Expected version to be a string. Was '{}' with type '{}'".format(
-            version, type(version))
-        assert isinstance(version, str), err_msg
-
-        allowed_chars = '-.0123456789'
-        v = version.replace('.', '-')
-
-        err_msg = "Version contained illegal characters. Expected version to consist of '{}' but was '{}'".format(
-            allowed_chars, version)
-        assert all([c in allowed_chars for c in v]), err_msg
-        self._version = version
-
-    @property
-    def version(self):
-        return self._version.replace('.', '-')
-
-    def __str__(self):
-        return self.version
-
-    @dispatch(object)
-    def __eq__(self, other):
-        if not isinstance(other, TensorflowVersion):
-            return NotImplemented
-
-        other_v = str(other).split('-')
-        this_v = str(self).split('-')
-        for o, t in zip(other_v, this_v):
-            if o != t:
-                return False
-        return True
-
-    @dispatch(str)
-    def __eq__(self, other: str):
-        return TensorflowVersion(other) == self
-
-    @dispatch(object)
-    def __lt__(self, other):
-        if not isinstance(other, TensorflowVersion):
-            return NotImplemented
-
-        other_v = str(other).split('-')
-        this_v = str(self).split('-')
-        for o, t in zip(other_v, this_v):
-            if o != t:
-                return int(o) < int(t)
-
-        return False
-
-    @dispatch(str)
-    def __lt__(self, other: str):
-        return TensorflowVersion(other) < self
+from . import meta_utils
 
 
 def tf_version():
-    return TensorflowVersion(tf.__version__)
+    return meta_utils.TensorflowVersion(tf.__version__)
 
 
 def enable_eager():
     if tf_version() <= '1.15':
         tf.enable_eager_execution()
-
-
-if __name__ == '__main__':
-    v = TensorflowVersion('1.12.0')
-    print(v == '1.12.0')
-    print(v <= '1.12.0')
-    print(v < '1.12.0')
-
-    print(v == '1.13.0')
-    print(v <= '1.13.0')
-    print(v < '1.13.0')
-
-    print(v == '1.12')
 
 
 def save_model(model, path):

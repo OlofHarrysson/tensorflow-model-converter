@@ -14,6 +14,12 @@ def parse_args():
                    required=True,
                    help='Path to input model')
 
+    p.add_argument('-s',
+                   '--save_path',
+                   type=str,
+                   required=True,
+                   help='Directory where inference result will be saved')
+
     return p.parse_args()
 
 
@@ -24,11 +30,12 @@ def main():
     model_path = Path(args.model_path)
     model = tf_utils.load_model(model_path)
 
-    #
     inputs = tf_utils.prepare_input(model)
-
     outputs = model(inputs)
-    print(outputs)
+
+    tf_version = tf_utils.tf_version()
+    save_path = f'{args.save_path}_tf_{tf_version}'
+    np.save(save_path, outputs)
 
 
 if __name__ == '__main__':
