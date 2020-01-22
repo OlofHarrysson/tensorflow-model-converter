@@ -23,3 +23,11 @@ git clone https://github.com/OlofHarrysson/tensorflow-model-converter.git
 cd tensorflow-model-converter
 
 python main.py -h
+
+
+
+## Feature requests
+
+Vote for features or add suggestions you want to see at [https://internetport.hellonext.co/b/tensorflow-model-converter](https://internetport.hellonext.co/b/tensorflow-model-converter)  
+
+Pull requests are welcome :)
