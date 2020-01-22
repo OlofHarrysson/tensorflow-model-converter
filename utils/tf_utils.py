@@ -51,7 +51,7 @@ def _load_json_model(path_h5):
 
 
 def _remove_ragged(json_model):
-    ''' TODO '''
+    ''' Tensorflow 1.x doesn't support ragged tensors '''
     return meta_utils.remove_keys(json_model, 'ragged')
 
 
