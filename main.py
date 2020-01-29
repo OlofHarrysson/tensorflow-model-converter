@@ -45,10 +45,10 @@ def parse_args():
       "How closely the models' outputs need to match. Generally 1e-6 for float32 models"
     )
 
-    p.add_argument("-v",
-                   "--verbose",
-                   action="store_true",
-                   help='Prints output from Docker')
+    p.add_argument("-q",
+                   "--quiet",
+                   action='store_false',
+                   help='Disable print output from Docker')
 
     return p.parse_args()
 
@@ -59,7 +59,7 @@ def main():
 
     assert Path(args.model_path).exists(), f'File not found: {args.model_path}'
 
-    verbose = args.verbose
+    verbose = args.quiet
     org_model_path = Path(args.model_path)
     inp_model_path = convert_model(org_model_path, in_version, verbose)
     out_model_path = convert_model(inp_model_path, out_version, verbose)
