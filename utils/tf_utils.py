@@ -70,4 +70,6 @@ def prepare_input(model):
             inp_shape = (1, ) + inp_shape[1:]
             inp = np.random.rand(*inp_shape).astype(np.float32)
             inputs.append(inp)
+
+    assert inputs != [], 'Model input is empty'
     return inputs

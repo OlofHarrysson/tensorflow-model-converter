@@ -70,7 +70,7 @@ def main():
       Model(inp_model_path, in_version, 'resaved'),
       Model(out_model_path, out_version, 'final')
     ]
-    test_utils.test_models(models, args.verbose, args.epsilon)
+    test_utils.test_models(models, verbose, args.epsilon)
 
 
 def convert_model(model_path, tf_version, verbose):
