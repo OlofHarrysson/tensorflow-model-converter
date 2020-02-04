@@ -4,13 +4,13 @@
 
 Tensorflow has support to read models from multiple versions but lacks export functionality to save models to a different version. For example, one can not read a tensorflow 2.x model into 1.x due to the introduction of "ragged tensors". 
 
-This repo tries to fill that gap. It does so by loading a model and re-saving it into a target tensorflow version.
+This repo tries to fill that gap. It does so by loading a model and re-saving it into a target tensorflow version. It only works for models that are saved in the .h5 format.
 
 
 
 ## Requirements
 
-Python 3.6+
+Python 3.7+
 
 Docker [(website)](https://www.docker.com/)
 
