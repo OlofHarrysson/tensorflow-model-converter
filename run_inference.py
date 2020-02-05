@@ -34,7 +34,7 @@ def main():
     outputs = model(inputs)
 
     tf_version = tf_utils.tf_version()
-    save_path = f'{args.save_path}_tf_{tf_version}'
+    save_path = '{}_tf_{}'.format(args.save_path, tf_version)
     np.save(save_path, outputs)
 
 

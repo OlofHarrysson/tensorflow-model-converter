@@ -17,7 +17,7 @@ def parse_args():
 
     # Stable releases from tensorflows docker. Could also work with non-stable releases
     tf_1 = [
-      '1.11.0', '1.12.0', '1.12.3', '1.13.1', '1.13.2', '1.14.0', '1.15.0'
+        '1.11.0', '1.12.0', '1.12.3', '1.13.1', '1.13.2', '1.14.0', '1.15.0'
     ]
     tf_2 = ['2.0.0', '2.1.0']
     tf_versions = tf_1 + tf_2
@@ -37,12 +37,12 @@ def parse_args():
                    help='Tensorflow version for output model')
 
     p.add_argument(
-      '-e',
-      '--epsilon',
-      type=float,
-      default=1e-6,
-      help=
-      "How closely the models' outputs need to match. Generally 1e-6 for float32 models"
+        '-e',
+        '--epsilon',
+        type=float,
+        default=1e-6,
+        help=
+        "How closely the models' outputs need to match. Generally 1e-6 for float32 models"
     )
 
     p.add_argument("-q",
@@ -66,9 +66,9 @@ def main():
 
     Model = namedtuple('Model', ['path', 'tf_version', 'name'])
     models = [
-      Model(org_model_path, in_version, 'original'),
-      Model(inp_model_path, in_version, 'resaved'),
-      Model(out_model_path, out_version, 'final')
+        Model(org_model_path, in_version, 'original'),
+        Model(inp_model_path, in_version, 'resaved'),
+        Model(out_model_path, out_version, 'final')
     ]
     test_utils.test_models(models, verbose, args.epsilon)
 
