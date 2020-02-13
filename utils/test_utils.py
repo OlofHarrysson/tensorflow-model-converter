@@ -12,7 +12,7 @@ def validate_outputs(model_outputs, verbose=True, eps=1e-05):
     # Print model outputs
     if verbose:
         for model in model_outputs:
-            print(f"Model {model.name}:", model.data)
+            print(f"\nModel {model.name} output: shape={model.data.shape} data=\n\n{model.data}")
 
     # Compare models
     failed_models = []
@@ -34,7 +34,8 @@ def validate_outputs(model_outputs, verbose=True, eps=1e-05):
         model_combs = [f"'{m1} & {m2}'" for m1, m2 in failed_models]
 
         print(
-            f"Models {' and '.join(model_combs)} didn't return the same answer. You can run the program again with the --verbose flag on for more info or increase the --epsilon value"
+            f"Models {' and '.join(model_combs)} didn't return the same answer."
+            "You can run the program again with an increased --epsilon value"
         )
 
     models_passed = not failed_models
@@ -60,7 +61,7 @@ def test_models(models, verbose, epsilon):
 
     passed_test = validate_outputs(model_outputs, verbose, epsilon)
     if passed_test:
-        out_model_path = models[-1].path
+        out_model_path = models[-1].path.stem
         print(
             f"All tests passed. You can use your new model @ '{out_model_path}'"
         )

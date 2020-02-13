@@ -1,6 +1,8 @@
 import argparse
 from pathlib import Path
 from collections import namedtuple
+from colorama import init, Fore
+init(autoreset=True)
 
 from utils import meta_utils
 from utils import test_utils
@@ -70,6 +72,7 @@ def main():
         Model(inp_model_path, in_version, 'resaved'),
         Model(out_model_path, out_version, 'final')
     ]
+    print(Fore.GREEN + f"Testing models...\n")
     test_utils.test_models(models, verbose, args.epsilon)
 
 
@@ -80,7 +83,7 @@ def convert_model(model_path, tf_version, verbose):
     command = f'python convert_model.py -m {model_path} -o {model_outdir}'
     docker_image = f'tensorflow/tensorflow:{tf_version}-py3'
     meta_utils.run_docker(docker_image, command, verbose)
-    print(f"Resaved model @ '{model_outdir}'")
+    print(Fore.GREEN + f"Resaved model @ '{model_outdir}'")
     return model_outdir / Path(model_path).name
 
 

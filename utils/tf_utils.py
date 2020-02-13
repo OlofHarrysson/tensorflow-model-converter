@@ -20,7 +20,7 @@ def enable_eager():
 
 
 def save_model(model, path):
-    assert path.suffix == '.h5', 'Only supports .h5 models'
+    assert path.suffix == '.h5', 'Specify .h5 model'
     keras.models.save_model(model, path)
     h5_weights_path = str(path).replace('.h5', '_weights.h5')
     tf_weights_path = str(path).replace('.h5', '_weights_tf')
@@ -41,7 +41,7 @@ def load_model(path):
 
 
 def _load_json_model(path_h5):
-    assert path_h5.suffix == '.h5', 'Only supports .h5 models'
+    assert path_h5.suffix == '.h5', 'Specify .h5 model'
     path_json = str(path_h5).replace('.h5', '.json')
 
     with open(path_json) as infile:
@@ -80,7 +80,6 @@ def prepare_input(model):
     return inp
 
 
-
 def remove_keys(obj, key2remove):
     ''' Recursively deletes key from input dictionary '''
 
@@ -102,14 +101,14 @@ def remove_keys(obj, key2remove):
 class TensorflowVersion():
     def __init__(self, version):
         err_msg = "Expected version to be a string. Was '{}' with type '{}'".format(
-            version, type(version))
+          version, type(version))
         assert isinstance(version, str), err_msg
 
         allowed_chars = '-.0123456789'
         v = version.replace('.', '-')
 
         err_msg = "Version contained illegal characters. Expected version to consist of '{}' but was '{}'".format(
-            allowed_chars, version)
+          allowed_chars, version)
         assert all([c in allowed_chars for c in v]), err_msg
         self._version = version
 
